@@ -134,7 +134,7 @@ module Kitchen
           INSTALL
         else
           case ansible_platform
-          when "debian", "ubuntu"
+          when "Debian", "Ubuntu"
           info("Installing ansible on #{ansible_platform}")
           <<-INSTALL
           if [ ! $(which ansible) ]; then
@@ -157,6 +157,9 @@ module Kitchen
             ## First try with -y flag, else if it fails, try without.
             ## "add-apt-repository: error: no such option: -y" is returned but is ok to ignore, we just retry
             #{sudo('add-apt-repository')} -y #{ansible_apt_repo} || #{sudo('add-apt-repository')} #{ansible_apt_repo}
+            if [ $(lsb_release -cs) -eq "wheezy" ]; then
+                #{sudo('add-apt-repository')} -y 'deb http://http.debian.net/debian wheezy-backports main'
+            fi
             #{sudo('apt-get')} update
             #{sudo('apt-get')} -y install ansible
             ## This test works on ubuntu to test if ansible repo has been installed via rquillo ppa repo
@@ -164,7 +167,7 @@ module Kitchen
           fi
           #{install_busser}
           INSTALL
-          when "redhat", "centos", "fedora"
+          when "RedHat", "CentOS", "Fedora"
           info("Installing ansible on #{ansible_platform}")
           <<-INSTALL
           if [ ! $(which ansible) ]; then
