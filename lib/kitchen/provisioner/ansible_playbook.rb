@@ -145,7 +145,7 @@ module Kitchen
             ## 13.10, 14.04 include add-apt-repository in software-properties-common
             #{sudo('apt-get')} -y install software-properties-common
             ## 10.04, 12.04 include add-apt-repository in 
-            {sudo('apt-get')} -y install python-software-properties
+          #  {sudo('apt-get')} -y install python-software-properties
           #  #{sudo('wget')} #{ansible_apt_repo}
           #  #{sudo('dpkg')} -i #{ansible_apt_repo_file}
           #  #{sudo('apt-get')} -y autoremove ## These autoremove/autoclean are sometimes useful but
@@ -190,7 +190,7 @@ module Kitchen
             ## 13.10, 14.04 include add-apt-repository in software-properties-common
             #{sudo('apt-get')} -y install software-properties-common
             ## 10.04, 12.04 include add-apt-repository in 
-            #{sudo('apt-get')} -y install python-software-properties
+            {sudo('apt-get')} -y install python-software-properties
           #  #{sudo('wget')} #{ansible_apt_repo}
           #  #{sudo('dpkg')} -i #{ansible_apt_repo_file}
           #  #{sudo('apt-get')} -y autoremove ## These autoremove/autoclean are sometimes useful but
