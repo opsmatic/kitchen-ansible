@@ -184,13 +184,18 @@ module Kitchen
                #{sudo('yum')} -y install ansible#{ansible_redhat_version} libselinux-python
             else
            ## Install apt-utils to silence debconf warning: http://serverfault.com/q/358943/77156
+            
             #{sudo('apt-get')} -y install apt-utils
             ## Fix debconf tty warning messages
             export DEBIAN_FRONTEND=noninteractive
             ## 13.10, 14.04 include add-apt-repository in software-properties-common
+            #{sudo('apt-get')} update
             #{sudo('apt-get')} -y install software-properties-common
             ## 10.04, 12.04 include add-apt-repository in 
             #{sudo('apt-get')} -y install python-software-properties
+            if [ $(lsb_release -cs) == "wheezy" ]; then
+              sudo add-apt-repository -y 'deb http://http.debian.net/debian wheezy-backports main'
+            fi
           #  #{sudo('wget')} #{ansible_apt_repo}
           #  #{sudo('dpkg')} -i #{ansible_apt_repo_file}
           #  #{sudo('apt-get')} -y autoremove ## These autoremove/autoclean are sometimes useful but
@@ -202,10 +207,6 @@ module Kitchen
             ## First try with -y flag, else if it fails, try without.
             ## "add-apt-repository: error: no such option: -y" is returned but is ok to ignore, we just retry
             #{sudo('add-apt-repository')} -y #{ansible_apt_repo} || #{sudo('add-apt-repository')} #{ansible_apt_repo}
-            if [ $(lsb_release -cs) == "wheezy" ]; then
-              sudo apt-get -y install python-software-properties
-              sudo add-apt-repository -y 'deb http://http.debian.net/debian wheezy-backports main'
-            fi
             #{sudo('apt-get')} update
             #{sudo('apt-get')} -y install ansible
             ## This test works on ubuntu to test if ansible repo has been installed via rquillo ppa repo
